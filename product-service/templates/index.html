@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .flash-messages {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .flash-messages ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Products Management</h1>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="section">
+        <h2>Add Product</h2>
+        <form action="{{ url_for('add_product') }}" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="3"></textarea>
+
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Edit Product</h2>
+        <form action="{{ url_for('edit_product') }}" method="post">
+            <label for="edit-id">Product ID:</label>
+            <input type="number" id="edit-id" name="id" required>
+
+            <label for="edit-name">New Name:</label>
+            <input type="text" id="edit-name" name="name" required>
+
+            <label for="edit-description">New Description:</label>
+            <textarea id="edit-description" name="description" rows="3"></textarea>
+
+            <button type="submit">Update Product</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Delete Product</h2>
+        <form action="{{ url_for('delete_product') }}" method="post">
+            <label for="delete-id">Product ID:</label>
+            <input type="number" id="delete-id" name="id" required>
+
+            <button type="submit">Delete Product</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Current Products</h2>
+        <div class="product-list">
+            {% if products %}
+                {% for product in products %}
+                    <div class="product-item">
+                        <strong>{{ product['name'] }}</strong> (ID: {{ product['id'] }})
+                        <p>{{ product['description'] }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No products available.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
