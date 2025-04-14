@@ -72,20 +72,18 @@ def edit_product():
     flash("Product updated successfully!")
     return redirect(url_for("home"))
 # Add these routes to your product service app.py
-
-@app.route("/product/<int:product_id>", methods=['GET'])
-def product_details(product_id):
+    
+@app.route("/products", methods=['GET'])
+def get_all_products():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products WHERE id = ?", (product_id,))
-    product = cursor.fetchone()
+    cursor.execute("SELECT id, name FROM products")
+    products = cursor.fetchall()
     conn.close()
-    
-    if product:
-        return json.dumps(dict(product))
-    else:
-        return "Product not found", 404
+
+    return json.dumps([dict(row) for row in products]), 200, {'Content-Type': 'application/json'}
+
     
 if __name__ == "__main__":
     init_db()
