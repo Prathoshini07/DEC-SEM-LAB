@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>
+            Order Systems</title>
+        </head>
+    <body>
+        <h2>Create Order</h2>
+        {%with messages=get_flashed_messages()%}
+            {%if messages%}
+                {%for message in messages%}
+                    <p>{{message}}</p>
+                {%endfor%}
+            {%endif%}
+        {%endwith%}
+        <form action="/create_order" method="post">
+            <label for="produtct_id">Product id</label>
+            <select id="product_id" name="product_id">
+                {% for product in products%}
+                <option value={{product.product_id}}>{{product.product_name}}</option>
+                {%endfor%}
+            </select>
+            <label for="quantity">Quantity</label>
+            <input type="number" name="quantity">
+            <label for="customer_name">Customer name</label>
+            <input type="text" name="cusname">
+            <button type="submit">SUbmit</button>
+        </form>
+    </body>
+</html>
